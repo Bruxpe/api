@@ -1,14 +1,22 @@
 require('dotenv').config(); //con esto podemos leer env
+const pg = require('pg')
 const { Sequelize, DataTypes } = require('sequelize'); // creamos una interaccion  JS <---->BD
 const fs = require('fs');
 const path = require('path');
 const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 
-const sequelize = new Sequelize(                               //*--> aca es lo de internet
-   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/poke`,  
+const sequelize = new Sequelize(                               
+   `postgres://default:bsO6zQNXTo2J@ep-divine-limit-029961.us-east-2.postgres.vercel-storage.com:5432/verceldb`,  
    {
+      dialectModule: pg,
       logging: false, // set to console.log to see the raw SQL queries
       native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+      dialectOptions:{
+         ssl:{
+            require: true,
+            rejectUnauthorized: false
+         }
+      }
    }
 );
 
